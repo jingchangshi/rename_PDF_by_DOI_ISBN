@@ -20,8 +20,14 @@ import isbnlib
 BibContentDict = isbnlib.meta(ISBNStr, service="wcat")
 
 FirstAuthorStr = BibContentDict['Authors'][0]
-FirstAuthorList = FirstAuthorStr.split()
-FirstAuthorLastNameStr = FirstAuthorList[-1].lower()
+if "et al" in FirstAuthorStr:
+	FirstAuthorList = FirstAuthorStr.split()
+	for StrInd in range(len(FirstAuthorList)):
+		if FirstAuthorList[StrInd] == "...":
+			FirstAuthorLastNameStr = FirstAuthorList[StrInd-1].lower()
+else:
+	FirstAuthorList = FirstAuthorStr.split()
+	FirstAuthorLastNameStr = FirstAuthorList[-1].lower()
 
 YearStr = BibContentDict['Year']
 
@@ -29,7 +35,6 @@ TitleRawStr = BibContentDict['Title']
 TitleList = TitleRawStr.split()
 TitleStr = '_'.join(TitleList)
 TitleStr = TitleStr.lower()
-
 
 PDFFileNewNameStr = "-".join([FirstAuthorLastNameStr, YearStr, TitleStr])
 PDFFileNewNameStr = PDFFileNewNameStr + ".pdf"
