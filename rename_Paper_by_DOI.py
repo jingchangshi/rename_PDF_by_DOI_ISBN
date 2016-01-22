@@ -51,6 +51,9 @@ def renamePDFFile_by_BibFile():
 		if BibFileSingleLineStr[0:6] == "author":
 			AuthorsStr = BibFileSingleLineStr[10:-2]
 			AuthorsList = AuthorsStr.split()
+			FirstAuthorLastNameStr = AuthorsList[-1].lower()
+			FirstAuthorLastNameStr = \
+				''.join(s for s in FirstAuthorLastNameStr if s.isalnum())
 			for StrInd in range(len(AuthorsList)):
 				if AuthorsList[StrInd] == "and":
 					FirstAuthorLastNameStr = AuthorsList[StrInd-1].lower()
@@ -66,14 +69,14 @@ def renamePDFFile_by_BibFile():
 					''.join(s for s in TitleList[StrInd] if s.isalnum())
 			TitleStr = '_'.join(TitleList)
 			TitleStr = TitleStr.lower()
-
 	PDFFileNewNameStr = "-".join([FirstAuthorLastNameStr, YearStr, TitleStr])
 	PDFFileNewNameStr = PDFFileNewNameStr + ".pdf"
 	print PDFFileNewNameStr
 	os.rename(PDFFileNameStr, PDFFileNewNameStr)
 
 	print "Your paper file is renamed!"
-
+	os.remove(BibFileNameStr)
+	
 ###################
 # Main
 getBibFile_by_DOI()
